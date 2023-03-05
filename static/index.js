@@ -1,11 +1,17 @@
+
 const container=document.getElementById('container');
 var convertedData;
-var dataFetch=async(search="haridwar")=>{
-  data= await fetch(`https://newsapi.org/v2/everything?q=${search}&from=2023-02-04&sortBy=publishedAt&apiKey=5f41af76642941b4b9d424d505bb7ad4`);
- convertedData=await data.json()
+var dataFetch=async(search)=>{
+  var date=new Date()
+
+  data= await fetch(`https://newsapi.org/v2/everything?q=${search}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=publishedAt&apiKey=5f41af76642941b4b9d424d505bb7ad4`)
+  
+ convertedData=await data.json();
  var title="";
+
  var description="";
- for(var i=0; i<convertedData.articles.length; i++){
+ length=Object.keys(convertedData.articles).length;
+ for(var i=0; i<length; i++){
  title=convertedData.articles[i].title;
  names=convertedData.articles[i].source.name;
  description=convertedData.articles[i].description;
@@ -21,7 +27,7 @@ var dataFetch=async(search="haridwar")=>{
 container.insertAdjacentHTML('afterbegin',element);
 
  }
- return convertedData;
+ 
 }
 
 var readmore=()=>{
@@ -42,11 +48,11 @@ const SearchData=()=>{
   event.preventDefault();
   inputSearch=document.getElementById('searchInput').value;
   if(inputSearch===''){
-    alert("Please Enter a Valid Search Value ⚠️⚠️");
+    alert("Please Enter a Valid Search Value ⚠️");
   }
 else{
  document.getElementById('container').innerHTML="";
  dataFetch(inputSearch)
 }
 }
-convertedData=dataFetch("Jammu")
+dataFetch('haridwar')
